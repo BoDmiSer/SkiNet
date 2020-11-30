@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SkiNet.Data;
+using SkiNet.Data.Repository;
 using SkiNet.Models;
 
 namespace SkiNet.Controllers
@@ -14,23 +15,24 @@ namespace SkiNet.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly StoreContext _context;
-        public ProductsController(StoreContext context)
+        private IProductRepository _repository;
+
+        public ProductsController(IProductRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _repository.GetProductsAsync();
             return Ok(products);
         }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _repository.GetProducByIdAsync(id);
             return Ok(product);
         }
     }
