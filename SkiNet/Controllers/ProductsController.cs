@@ -35,5 +35,19 @@ namespace SkiNet.Controllers
             var product = await _repository.GetProducByIdAsync(id);
             return Ok(product);
         }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
+        {
+            var productBrands = await _repository.GetProductBrandsAsync();
+            return Ok(productBrands);
+        }
+
+        [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+        {
+            var productTypes = await _repository.GetProductTypesAsync();
+            return Ok(productTypes);
+        }
     }
 }
