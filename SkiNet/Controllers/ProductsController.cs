@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using SkiNet.Data;
 using SkiNet.Data.Repository;
 using SkiNet.Dtos;
+using SkiNet.Errors;
 using SkiNet.Models;
 using SkiNet.Specifications;
 
@@ -30,7 +31,7 @@ namespace SkiNet.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts()
         {
             var spec = new ProductsWithTypesAndBrandsSpecification();
             var products = await _productsRepo.ListAsync(spec);
@@ -38,10 +39,13 @@ namespace SkiNet.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productsRepo.GetEntityWithSpec(spec);
+            if (product == null) return NotFound(new ApiResponse(404));
             return Ok(_mapper.Map<Product,ProductToReturnDto>(product));
         }
 
