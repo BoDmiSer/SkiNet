@@ -20,7 +20,7 @@ namespace SkiNet.Controllers
         [HttpGet("notfound")]
         public ActionResult GetNotFoundRequest()
         {
-            var thing = _context.Products.Find(42);
+            var thing = _context.Products.Find(52);
             if (thing == null)
             {
                 return NotFound(new ApiResponse(404));
@@ -30,7 +30,7 @@ namespace SkiNet.Controllers
         [HttpGet("servererror")]
         public ActionResult GetServerError()
         {
-            var thing = _context.Products.Find(42);
+            var thing = _context.Products.Find(52);
             var thingToReturn = thing.ToString();
             return Ok();
         }
