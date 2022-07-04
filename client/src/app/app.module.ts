@@ -13,7 +13,7 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
