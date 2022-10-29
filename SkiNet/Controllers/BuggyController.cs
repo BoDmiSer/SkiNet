@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SkiNet.Data;
 using SkiNet.Errors;
 using System;
@@ -27,6 +28,7 @@ namespace SkiNet.Controllers
             }
             return Ok();
         }
+
         [HttpGet("servererror")]
         public ActionResult GetServerError()
         {
@@ -34,15 +36,24 @@ namespace SkiNet.Controllers
             var thingToReturn = thing.ToString();
             return Ok();
         }
+
         [HttpGet("badrequest")]
         public ActionResult GetBadRequest()
         {
             return BadRequest(new ApiResponse(400));
         }
+
         [HttpGet("badrequest/{id}")]
         public ActionResult GetNotFoundRequest(int id)
         {
             return Ok();
+        }
+
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetSecretText()
+        {
+            return "secret method text";
         }
     }
 }
