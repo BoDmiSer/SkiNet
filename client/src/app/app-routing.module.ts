@@ -6,6 +6,7 @@ import { TestErrorComponent } from './core/test-error/test-error.component';
 import { HomeComponent } from './home/home.component';
 import { ProductDetailsComponent } from './shop/product-details/product-details.component';
 import { ShopComponent } from './shop/shop.component';
+import { AuthGuard } from  './core/guards/auth.guard';
 
 const routes: Routes = [
   {path:'',component:HomeComponent,data:{breadcrumb:"Home"}},
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path:'not-found',component:NotFoundComponent,data:{breadcrumb:"Not Found"}},
   {path:'shop',loadChildren:()=>import('../app/shop/shop.module').then(mod =>mod.ShopModule),data:{breadcrumb:"Shop"}},
   {path:'basket',loadChildren:()=>import('../app/basket/basket.module').then(mod =>mod.BasketModule),data:{breadcrumb:"Basket"}},
-  {path:'checkout',loadChildren:()=>import('../app/checkout/checkout.module').then(mod =>mod.CheckoutModule),data:{breadcrumb:"Checkout"}},
+  {path:'checkout',canActivate: [AuthGuard], loadChildren:()=>import('../app/checkout/checkout.module').then(mod =>mod.CheckoutModule),data:{breadcrumb:"Checkout"}},
+  {path:'account',loadChildren:()=>import('../app/account/account.module').then(mod =>mod.AccountModule),data:{breadcrumb:{skip: true}}},
   {path:'**',redirectTo:'not-found',pathMatch:'full'},
 
 ];
