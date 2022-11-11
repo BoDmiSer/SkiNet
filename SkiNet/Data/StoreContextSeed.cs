@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SkiNet.Models;
+using SkiNet.Models.OrderAggregate;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,8 +46,18 @@ namespace SkiNet.Data
                     }
                     await context.SaveChangesAsync();
                 }
+                if (!context.DeliveryMethod.Any())
+                {
+                    var dmData = File.ReadAllText("Data/SeedData/delivery.json");
+                    var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(dmData);
+                    foreach (var item in methods)
+                    {
+                        context.DeliveryMethod.Add(item);
+                    }
+                    await context.SaveChangesAsync();
+                }
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
                 var logger = loggerFactory.CreateLogger<StoreContextSeed>();
                 logger.LogError(ex.Message);
