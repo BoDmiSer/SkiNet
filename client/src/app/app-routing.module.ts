@@ -17,6 +17,7 @@ const routes: Routes = [
   {path:'basket',loadChildren:()=>import('../app/basket/basket.module').then(mod =>mod.BasketModule),data:{breadcrumb:"Basket"}},
   {path:'checkout',canActivate: [AuthGuard], loadChildren:()=>import('../app/checkout/checkout.module').then(mod =>mod.CheckoutModule),data:{breadcrumb:"Checkout"}},
   {path:'account',loadChildren:()=>import('../app/account/account.module').then(mod =>mod.AccountModule),data:{breadcrumb:{skip: true}}},
+  {path: 'order',canActivate: [AuthGuard], loadChildren: () => import('../app/core/orders/orders.module').then(mod => mod.OrdersModule), data: { breadcrumb: 'Order' }},
   {path:'**',redirectTo:'not-found',pathMatch:'full'},
 
 ];

@@ -43,23 +43,25 @@ namespace SkiNet.Services.Implementatin
             var subtotal = items.Sum(item => item.Price * item.Quantity);
 
             // check to see if order exists
-            var spec = new OrderByPaymentIntentWithItemsSpecification(basket.PaymentIntentId);
-            var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+            //var spec = new OrderByPaymentIntentWithItemsSpecification(basket.PaymentIntentId);
+            //var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
 
             // create order
             var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal, basket.PaymentIntentId);
             _unitOfWork.Repository<Order>().Add(order);
 
-            if (existingOrder != null)
-            {
-                _unitOfWork.Repository<Order>().Delete(existingOrder);
-                await _paymentService.CreateOrUpdatePaymentIntent(basket.PaymentIntentId);
-            }
+            //if (existingOrder != null)
+            //{
+            //    _unitOfWork.Repository<Order>().Delete(existingOrder);
+            //    await _paymentService.CreateOrUpdatePaymentIntent(basket.PaymentIntentId);
+            //}
 
             // TODO: save to db
             var result = await _unitOfWork.Complete();
 
             if (result <= 0) return null;
+
+            await _basketRepo.DeleteBasketAsync(basketId);
 
             // return order
             return order;

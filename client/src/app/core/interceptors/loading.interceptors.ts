@@ -10,7 +10,7 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(private busyService: BusyService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (request.method === 'POST' && request.url.includes('orders')) {
+    if (request.method === 'POST' && request.url.includes('order')) {
       return next.handle(request);
     }
     if (request.method === 'DELETE') {
